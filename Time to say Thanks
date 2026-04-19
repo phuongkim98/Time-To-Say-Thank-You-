@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lời Chào Từ Bà T 🌸</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --primary-pink: #ffafcc;
+            --secondary-pink: #ffc8dd;
+            --deep-pink: #fb6f92;
+            --bg-color: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#ffafcc 0.5px, transparent 0.5px);
+            background-size: 20px 20px; /* Background chấm bi dễ thương */
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; margin: 0; overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%; max-width: 500px;
+            background: white; padding: 30px;
+            border-radius: 30px; border: 4px solid var(--primary-pink);
+            box-shadow: 10px 10px 0px var(--secondary-pink);
+            text-align: center; position: relative;
+        }
+
+        .screen { display: none; }
+        .active { display: block; animation: fadeInUp 0.5s; }
+
+        h1 { color: var(--deep-pink); font-size: 24px; }
+        p { color: #555; line-height: 1.6; }
+
+        .btn {
+            display: block; width: 100%; padding: 15px; margin: 12px 0;
+            background: var(--primary-pink); color: white;
+            border: none; border-radius: 15px; font-weight: bold;
+            font-size: 16px; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 4px 0 #e6a0bb;
+        }
+
+        .btn:hover { background: var(--deep-pink); transform: translateY(-2px); }
+        .btn:active { transform: translateY(2px); box-shadow: none; }
+
+        .back-link {
+            display: inline-block; margin-top: 20px;
+            color: #888; text-decoration: none; font-size: 14px;
+        }
+
+        /* Hiệu ứng lấp lánh cho phần Tiên tri */
+        #prophecy-result {
+            margin-top: 20px; padding: 15px;
+            border: 2px dashed var(--deep-pink); border-radius: 10px;
+            background: #fff0f3; color: #d00000; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container animate__animated animate__fadeIn">
+
+    <div id="step1" class="screen active">
+        <h1>Bà T. Say Hi! 👋</h1>
+        <p>Trước khi t "rời khỏi cuộc chơi", chọn đúng team của bà để nhận quà nhé!</p>
+        <button class="btn" onclick="goToStep('trade-choice')">Team Trade Office</button>
+        <button class="btn" onclick="goToStep('asa-choice')">Team Asa</button>
+    </div>
+
+    <div id="trade-choice" class="screen">
+        <h1>Team Trade Office</h1>
+        <p>Bà thuộc hội ngồi văn phòng hay hội qua màn hình?</p>
+        <button class="btn" onclick="goToStep('trade-offline')">Team Offline (Tại chỗ)</button>
+        <button class="btn" onclick="goToStep('trade-online')">Team Online (Từ xa)</button>
+        <a href="#" class="back-link" onclick="goToStep('step1')">← Quay lại</a>
+    </div>
+
+    <div id="asa-choice" class="screen">
+        <h1>Team Asa</h1>
+        <p>Bà làm việc với t theo kiểu nào?</p>
+        <button class="btn" onclick="goToStep('asa-offline')">Team Offline</button>
+        <button class="btn" onclick="goToStep('asa-online')">Team Online</button>
+        <a href="#" class="back-link" onclick="goToStep('step1')">← Quay lại</a>
+    </div>
+
+    <div id="trade-offline" class="screen">
+        <h1>Team Trade Offline ☕</h1>
+        <p>Ai đang xem đó? Nhấn vào tên bà nhé:</p>
+        <button class="btn" onclick="showWish('Chị Lan', 'Cảm ơn chị đã luôn chỉ bảo em tận tình. Chúc chị luôn xinh đẹp và chốt đơn mỏi tay!')">Chị Lan</button>
+        <button class="btn" onclick="showWish('Anh Tuấn', 'Cảm ơn đại ca đã gánh team giúp em. Chúc anh sớm có người yêu!')">Anh Tuấn</button>
+        <a href="#" class="back-link" onclick="goToStep('trade-choice')">← Quay lại</a>
+    </div>
+
+    <div id="asa-online" class="screen">
+        <h1>Team Asa Online 💻</h1>
+        <button class="btn" onclick="showWish('Bạn Linh', 'Dù chỉ làm online nhưng t rất quý bà. Hẹn gặp lại nhé!')">Bạn Linh</button>
+        <a href="#" class="back-link" onclick="goToStep('asa-choice')">← Quay lại</a>
+    </div>
+
+    <div id="wish-screen" class="screen">
+        <h2 id="member-name"></h2>
+        <div id="wish-text" style="background: #fff; padding: 15px; border-radius: 10px; border: 1px solid #ddd;"></div>
+        
+        <div style="margin-top: 30px;">
+            <p style="font-size: 13px;">Nhấn để xem Vũ Trụ nói gì về tương lai của bà:</p>
+            <button class="btn" style="background: #9b59b6; box-shadow: 0 4px 0 #8e44ad;" onclick="getProphecy()">🔮 Nhận thông điệp tiên tri</button>
+            <div id="prophecy-result" style="display: none;"></div>
+        </div>
+
+        <a href="#" id="back-to-list" class="back-link">← Quay lại danh sách</a>
+    </div>
+
+</div>
+
+<script>
+    let currentTeamStep = '';
+
+    function goToStep(stepId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(stepId).classList.add('active');
+        // Lưu lại bước trước đó để nút "Back" ở trang lời chúc biết đường mà về
+        if(stepId.includes('offline') || stepId.includes('online')) {
+            currentTeamStep = stepId;
+        }
+    }
+
+    function showWish(name, text) {
+        document.getElementById('member-name').innerText = "Gửi " + name + " ✨";
+        document.getElementById('wish-text').innerText = text;
+        document.getElementById('prophecy-result').style.display = "none";
+        document.getElementById('back-to-list').onclick = function() { goToStep(currentTeamStep); };
+        goToStep('wish-screen');
+    }
+
+    function getProphecy() {
+        const list = [
+            "Tương lai bà rất sáng, sáng hơn cả màn hình laptop 100% độ sáng!",
+            "Sắp tới sẽ có người mời bà đi ăn, đừng từ chối nhé!",
+            "Ví tiền của bà sắp 'phình' to ra rồi đó.",
+            "Một tin vui về tình cảm đang trên đường đến với bà.",
+            "Cứ tự tin lên, bà giỏi hơn bà nghĩ nhiều!",
+            "Hôm nay bà rất đẹp, và ngày mai cũng vậy!"
+        ];
+        const random = list[Math.floor(Math.random() * list.length)];
+        const res = document.getElementById('prophecy-result');
+        res.innerText = random;
+        res.style.display = "block";
+        res.classList.add('animate__animated', 'animate__jackInTheBox');
+    }
+</script>
+
+</body>
+</html>
